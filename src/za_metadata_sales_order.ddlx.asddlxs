@@ -1,0 +1,52 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+    typeName: 'Kundenauftrag',
+    typeNamePlural: 'Kundenaufträge',
+    title: {
+        value: 'vbeln'
+    }
+}
+
+@Search.searchable: true
+annotate entity ZA1_C_SALES_ORDER with
+{
+
+  @UI.facet: [
+        { id: 'idMain' ,
+          purpose: #HEADER,
+          label: 'Kundenauftrag attribute' ,
+          type: #FIELDGROUP_REFERENCE,
+          targetQualifier: 'headerone'},
+
+        { id:'idUserInfo' ,
+          type: #COLLECTION ,
+          label: 'Benutzer Informationen' ,
+          position: 10 },
+        { id: 'Prio',
+          label: 'Ersteller',
+          parentId: 'idUserInfo',
+          type: #FIELDGROUP_REFERENCE,
+          targetQualifier: 'User',
+          position: 10 },
+          
+          { id: 'Produkte',
+            purpose: #STANDARD,
+            type: #LINEITEM_REFERENCE,
+            label: 'Produkte',
+            position: 20,
+            targetElement: '_positionen'}
+          ]
+
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+  @UI.lineItem: [{position: 10, importance: #HIGH}]
+  @UI.selectionField: [{position: 10}]
+  @UI.fieldGroup: [{ qualifier: 'headerone', position: 10 }]
+  vbeln;
+
+  @Search: { defaultSearchElement: true, fuzzinessThreshold: 1 }
+  @UI.lineItem: [{position: 20, importance: #HIGH}]
+  @UI.fieldGroup: [{ qualifier: 'User', position: 10 }]
+  ernam;
+
+}
